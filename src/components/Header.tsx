@@ -35,9 +35,9 @@ export function Header() {
               project@diistroy.ru
             </a>
           </div>
-          <Button asChild className="bg-orange-600 hover:bg-orange-700 text-white font-bold px-6">
-            <Link href="#contacts">ОТПРАВИТЬ ТЗ</Link>
-          </Button>
+          <Link href="#contacts" className="inline-flex items-center justify-center rounded-lg bg-orange-600 hover:bg-orange-700 text-white font-bold h-9 px-6 text-sm transition-colors">
+            ОТПРАВИТЬ ТЗ
+          </Link>
         </div>
 
         <button className="md:hidden text-white p-2">
