@@ -7,7 +7,7 @@ export function HeroSection() {
       {/* Фоновое изображение (заглушка) с оверлеем */}
       <div 
         className="absolute inset-0 z-0 opacity-40 bg-cover bg-center"
-        style={{ backgroundImage: "url('https://images.unsplash.com/photo-1541888081198-b80c5ce32915?q=80&w=2940&auto=format&fit=crop')" }}
+        style={{ backgroundImage: "url('/hero_bg.png')" }}
       />
       <div className="absolute inset-0 z-0 bg-gradient-to-b from-zinc-950/80 via-zinc-950/50 to-zinc-950" />
 
@@ -32,7 +32,7 @@ export function HeroSection() {
               ОТПРАВИТЬ ТЗ НА РАСЧЕТ
               <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
-            <Button size="lg" variant="outline" className="border-zinc-700 text-black hover:text-white hover:bg-zinc-800 bg-white/5 backdrop-blur-sm h-14 px-8 text-base">
+            <Button size="lg" variant="outline" className="border-zinc-700 text-white hover:!text-orange-500 hover:!bg-zinc-800 bg-white/5 backdrop-blur-sm h-14 px-8 text-base">
               СМОТРЕТЬ ОБЪЕКТЫ
               <ChevronRight className="ml-2 w-5 h-5" />
             </Button>

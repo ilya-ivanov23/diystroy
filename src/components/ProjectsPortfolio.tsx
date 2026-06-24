@@ -7,7 +7,7 @@ export function ProjectsPortfolio() {
       location: "Московская область",
       area: "45 000 м²",
       year: "2023",
-      image: "https://images.unsplash.com/photo-1586528116311-ad8ed745eb33?q=80&w=2940&auto=format&fit=crop",
+      image: "/portfolio_1.png",
       tags: ["Генподряд", "Металлокаркас", "Сэндвич-панели"]
     },
     {
@@ -15,7 +15,7 @@ export function ProjectsPortfolio() {
       location: "Калужская область",
       area: "12 000 м²",
       year: "2022",
-      image: "https://images.unsplash.com/photo-1565514020179-026b92b84bb6?q=80&w=2940&auto=format&fit=crop",
+      image: "/portfolio_2.png",
       tags: ["Фундаменты", "Инженерные сети"]
     },
     {
@@ -23,7 +23,7 @@ export function ProjectsPortfolio() {
       location: "Тульская область",
       area: "28 500 м²",
       year: "2024",
-      image: "https://images.unsplash.com/photo-1504307651254-35680f356f58?q=80&w=2940&auto=format&fit=crop",
+      image: "/portfolio_3.png",
       tags: ["СМР", "ОВиК", "НВК"]
     }
   ];

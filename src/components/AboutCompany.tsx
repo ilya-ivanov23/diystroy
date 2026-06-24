@@ -31,7 +31,7 @@ export function AboutCompany() {
             <div className="aspect-square bg-zinc-100 dark:bg-zinc-800 rounded-2xl overflow-hidden relative">
               <div 
                 className="absolute inset-0 bg-cover bg-center"
-                style={{ backgroundImage: "url('https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2831&auto=format&fit=crop')" }}
+                style={{ backgroundImage: "url('/about_bg.png')" }}
               />
             </div>
             {/* Плашка HSE */}
@@ -78,7 +78,7 @@ export function AboutCompany() {
                 <div key={i} className="aspect-[3/4] bg-white dark:bg-zinc-800 rounded flex items-center justify-center border border-zinc-200 dark:border-zinc-700 shadow-sm relative overflow-hidden group cursor-pointer">
                   <span className="text-xs font-bold text-zinc-400 group-hover:opacity-0 transition-opacity">Скан СРО</span>
                   {/* Заглушка сертификата */}
-                  <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1626266061368-46a8f578ddd6?q=80&w=2940&auto=format&fit=crop')] bg-cover opacity-0 group-hover:opacity-100 transition-opacity mix-blend-luminosity"></div>
+                  <div className="absolute inset-0 bg-[url('/certificate_bg.png')] bg-cover opacity-0 group-hover:opacity-100 transition-opacity mix-blend-luminosity"></div>
                 </div>
               ))}
             </div>
