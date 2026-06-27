@@ -5,149 +5,161 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Send, FileText, CheckCircle2, AlertCircle } from "lucide-react";
+import { Mail, MapPin, Phone, UploadCloud, CheckCircle2 } from "lucide-react";
 
 export function ContactForm() {
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setStatus("loading");
-
+    setIsSubmitting(true);
+    
+    // Сбор данных из формы
     const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData.entries());
-
-    // Собираем UTM метки из URL (простая реализация для примера)
-    let utm = {};
-    if (typeof window !== "undefined") {
-      const urlParams = new URLSearchParams(window.location.search);
-      utm = {
-        utm_source: urlParams.get("utm_source") || "",
-        utm_medium: urlParams.get("utm_medium") || "",
-        utm_campaign: urlParams.get("utm_campaign") || "",
-      };
-    }
+    const data = {
+      name: formData.get("name"),
+      phone: formData.get("phone"),
+      email: formData.get("email"),
+      message: formData.get("message"),
+      cloudLink: formData.get("cloudLink"),
+      utm_source: new URLSearchParams(window.location.search).get("utm_source") || "direct"
+    };
 
     try {
+      // Отправка в наш Webhook/ERP (Next.js API Route)
       const res = await fetch("/api/webhook", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, ...utm }),
+        body: JSON.stringify(data),
       });
 
       if (res.ok) {
-        setStatus("success");
+        setIsSuccess(true);
       } else {
-        setStatus("error");
+        alert("Произошла ошибка при отправке. Пожалуйста, позвоните нам.");
       }
     } catch (error) {
-      setStatus("error");
+      alert("Ошибка сети. Проверьте подключение.");
+    } finally {
+      setIsSubmitting(false);
     }
-  };
+  }
 
   return (
-    <section id="contacts" className="py-24 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800">
-      <div className="container mx-auto px-4 max-w-5xl">
+    <section id="contacts" className="py-24 bg-white relative">
+      <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           
-          {/* Контактная информация */}
+          {/* Контакты */}
           <div>
-            <h2 className="text-sm font-bold tracking-widest text-orange-600 uppercase mb-3">Контакты</h2>
-            <h3 className="text-3xl md:text-4xl font-extrabold text-zinc-900 dark:text-white mb-6">Готовы обсудить ваш проект?</h3>
-            <p className="text-lg text-zinc-600 dark:text-zinc-400 mb-10 leading-relaxed">
-              Свяжитесь с нами для консультации или отправьте проектную документацию для предварительного расчета стоимости и сроков реализации (ТЗ).
+            <h2 className="text-sm font-bold tracking-widest text-blue-600 uppercase mb-3">Свяжитесь с нами</h2>
+            <h3 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-6">Готовы обсудить ваш проект</h3>
+            <p className="text-lg text-slate-600 mb-10">
+              Пришлите техническое задание, проектную документацию или просто оставьте заявку. Наши инженеры ПТО свяжутся с вами для предварительного расчета СМР.
             </p>
-            
-            <div className="space-y-6">
+
+            <div className="space-y-8">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-zinc-100 dark:bg-zinc-800 rounded flex items-center justify-center shrink-0 text-orange-500">
-                  <span className="font-bold text-xl">📍</span>
+                <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center shrink-0">
+                  <Phone className="w-6 h-6 text-blue-600" />
                 </div>
                 <div>
-                  <div className="font-bold text-zinc-900 dark:text-white text-lg">Центральный офис</div>
-                  <div className="text-zinc-600 dark:text-zinc-400">г. Москва, ул. Промышленная, д. 1 (Пример)</div>
+                  <div className="text-sm text-slate-500 mb-1">Многоканальный телефон</div>
+                  <a href="tel:+78000000000" className="text-2xl font-bold text-slate-900 hover:text-blue-600 transition-colors">
+                    +7 (800) 000-00-00
+                  </a>
                 </div>
               </div>
               
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-zinc-100 dark:bg-zinc-800 rounded flex items-center justify-center shrink-0 text-orange-500">
-                  <span className="font-bold text-xl">📞</span>
+                <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center shrink-0">
+                  <Mail className="w-6 h-6 text-blue-600" />
                 </div>
                 <div>
-                  <div className="font-bold text-zinc-900 dark:text-white text-lg">Телефон</div>
-                  <a href="tel:+78000000000" className="text-zinc-600 dark:text-zinc-400 hover:text-orange-500 transition-colors">+7 (800) 000-00-00</a>
+                  <div className="text-sm text-slate-500 mb-1">Тендерный отдел и расчеты</div>
+                  <a href="mailto:project@diistroy.ru" className="text-xl font-bold text-slate-900 hover:text-blue-600 transition-colors">
+                    project@diistroy.ru
+                  </a>
                 </div>
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-zinc-100 dark:bg-zinc-800 rounded flex items-center justify-center shrink-0 text-orange-500">
-                  <span className="font-bold text-xl">✉️</span>
+                <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center shrink-0">
+                  <MapPin className="w-6 h-6 text-blue-600" />
                 </div>
                 <div>
-                  <div className="font-bold text-zinc-900 dark:text-white text-lg">Email для ТЗ</div>
-                  <a href="mailto:project@diistroy.ru" className="text-zinc-600 dark:text-zinc-400 hover:text-orange-500 transition-colors">project@diistroy.ru</a>
+                  <div className="text-sm text-slate-500 mb-1">Центральный офис</div>
+                  <div className="text-lg font-bold text-slate-900">
+                    г. Москва, БЦ "Индустрия", офис 404
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Форма */}
-          <div className="bg-zinc-50 dark:bg-zinc-950 p-8 md:p-10 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm relative overflow-hidden">
-            {status === "success" ? (
-              <div className="absolute inset-0 bg-zinc-50/95 dark:bg-zinc-950/95 backdrop-blur z-10 flex flex-col items-center justify-center text-center p-8">
-                <CheckCircle2 className="w-16 h-16 text-green-500 mb-4" />
-                <h4 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2">Заявка отправлена</h4>
-                <p className="text-zinc-600 dark:text-zinc-400 mb-6">Наш инженерный отдел свяжется с вами в течение рабочего дня.</p>
-                <Button onClick={() => setStatus("idle")} variant="outline" className="border-zinc-300 dark:border-zinc-700">Отправить еще</Button>
+          <div className="bg-slate-50 p-8 md:p-10 rounded-2xl border border-slate-200 shadow-sm relative">
+            {isSuccess ? (
+              <div className="absolute inset-0 bg-slate-50 rounded-2xl flex flex-col items-center justify-center text-center p-8 z-10 border border-slate-200">
+                <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-6">
+                  <CheckCircle2 className="w-10 h-10" />
+                </div>
+                <h4 className="text-2xl font-bold text-slate-900 mb-4">Заявка успешно отправлена!</h4>
+                <p className="text-slate-600 mb-8">
+                  Наш инженерный отдел уже получил ваши данные. Мы свяжемся с вами в течение 1 рабочего дня.
+                </p>
+                <Button 
+                  onClick={() => setIsSuccess(false)}
+                  variant="outline"
+                  className="border-slate-300 text-slate-700 hover:bg-slate-100"
+                >
+                  Отправить еще одну заявку
+                </Button>
               </div>
             ) : null}
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="name">Ваше имя</Label>
-                  <Input id="name" name="name" required placeholder="Иван Иванов" className="bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-700" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="company">Компания</Label>
-                  <Input id="company" name="company" placeholder="ООО ИнвестСтрой" className="bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-700" />
-                </div>
+            <h4 className="text-2xl font-bold text-slate-900 mb-6">Отправить ТЗ на расчет</h4>
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="space-y-2">
+                <Label htmlFor="name" className="text-slate-700">Ваше имя / Компания</Label>
+                <Input id="name" name="name" required className="bg-white border-slate-300 focus:border-blue-500 focus:ring-blue-500 text-slate-900 h-12" placeholder="ООО «ПромЗавод»" />
               </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div className="space-y-2">
-                  <Label htmlFor="phone">Телефон *</Label>
-                  <Input id="phone" name="phone" type="tel" required placeholder="+7 (___) ___-__-__" className="bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-700" />
+                  <Label htmlFor="phone" className="text-slate-700">Телефон</Label>
+                  <Input id="phone" name="phone" required className="bg-white border-slate-300 focus:border-blue-500 focus:ring-blue-500 text-slate-900 h-12" placeholder="+7 (999) 000-00-00" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input id="email" name="email" type="email" placeholder="example@domain.com" className="bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-700" />
+                  <Label htmlFor="email" className="text-slate-700">E-mail</Label>
+                  <Input id="email" name="email" type="email" required className="bg-white border-slate-300 focus:border-blue-500 focus:ring-blue-500 text-slate-900 h-12" placeholder="info@company.ru" />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="cloud_link" className="flex items-center gap-2">
-                  Ссылка на проект <span className="text-zinc-400 font-normal text-xs">(Яндекс.Диск, Google Drive, Mail.ru)</span>
+                <Label htmlFor="cloudLink" className="text-slate-700 flex items-center gap-2">
+                  <UploadCloud className="w-4 h-4 text-blue-600" /> 
+                  Ссылка на облако (Яндекс.Диск, Mail.ru, Google)
                 </Label>
-                <div className="relative">
-                  <FileText className="absolute left-3 top-2.5 h-5 w-5 text-zinc-400" />
-                  <Input id="cloud_link" name="cloud_link" placeholder="Вставьте ссылку на скачивание архива/ТЗ" className="pl-10 bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-700" />
-                </div>
-                <div className="flex items-start gap-2 mt-2 text-xs text-zinc-500">
-                  <AlertCircle className="w-4 h-4 shrink-0 text-orange-500" />
-                  <span>Для файлов объемом более 50 Мб (схемы DWG, тяжелые PDF) просим использовать облачные хранилища.</span>
-                </div>
+                <Input id="cloudLink" name="cloudLink" className="bg-white border-slate-300 focus:border-blue-500 focus:ring-blue-500 text-slate-900 h-12" placeholder="Ссылка на проектную документацию (если есть)" />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="message">Комментарий или задача</Label>
-                <Textarea id="message" name="message" rows={4} placeholder="Опишите масштаб работ или специфику объекта..." className="bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-700 resize-none" />
+                <Label htmlFor="message" className="text-slate-700">Комментарий к проекту</Label>
+                <Textarea id="message" name="message" className="bg-white border-slate-300 focus:border-blue-500 focus:ring-blue-500 text-slate-900 min-h-[120px]" placeholder="Опишите кратко объект строительства: площадь, назначение, где находится..." />
               </div>
 
-              <Button type="submit" disabled={status === "loading"} className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold h-14 text-base">
-                {status === "loading" ? "ОТПРАВКА..." : "ОТПРАВИТЬ НА ОЦЕНКУ"}
-                {!status && <Send className="ml-2 w-5 h-5" />}
+              <Button 
+                type="submit" 
+                disabled={isSubmitting}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold h-14 text-lg shadow-sm"
+              >
+                {isSubmitting ? "ОТПРАВКА..." : "РАССЧИТАТЬ СТОИМОСТЬ СМР"}
               </Button>
+              <p className="text-xs text-slate-500 text-center mt-4">
+                Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности.
+              </p>
             </form>
           </div>
         </div>
