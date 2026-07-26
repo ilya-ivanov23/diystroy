@@ -4,12 +4,12 @@ import { ArrowRight, HardHat, FileText, ChevronRight } from "lucide-react";
 export function HeroSection() {
   return (
     <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-slate-50">
-      {/* Фоновое изображение со светлым оверлеем для видимости картинки без "темной штуки" */}
+      {/* Фоновое изображение со сбалансированным оверлеем */}
       <div 
-        className="absolute inset-0 z-0 opacity-40 bg-cover bg-center mix-blend-multiply"
-        style={{ backgroundImage: "url('/hero_bg.png')" }}
+        className="absolute inset-0 z-0 opacity-35 bg-cover bg-center transition-transform duration-700 hover:scale-105"
+        style={{ backgroundImage: "url('/real_warehouse_facade.jpg')" }}
       />
-      <div className="absolute inset-0 z-0 bg-gradient-to-r from-white/90 via-white/70 to-transparent" />
+      <div className="absolute inset-0 z-0 bg-gradient-to-r from-white via-white/80 to-slate-900/20" />
       <div className="absolute inset-0 z-0 bg-gradient-to-t from-slate-50 via-transparent to-transparent" />
 
       <div className="container mx-auto px-4 relative z-10">
