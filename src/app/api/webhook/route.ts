@@ -116,8 +116,9 @@ export async function POST(req: Request) {
 
         await fetch(googleSheetWebhookUrl, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
           body: JSON.stringify(payloadToSheet),
+          redirect: "follow",
         });
       } catch (sheetErr) {
         console.error("Ошибка при отправке в Google Таблицу:", sheetErr);
