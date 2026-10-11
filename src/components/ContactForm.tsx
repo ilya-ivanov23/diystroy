@@ -78,8 +78,8 @@ export function ContactForm() {
                 </div>
                 <div>
                   <div className="text-sm text-slate-500 mb-1">Тендерный отдел и расчеты</div>
-                  <a href="mailto:project@diistroy.ru" className="text-xl font-bold text-slate-900 hover:text-blue-600 transition-colors">
-                    project@diistroy.ru
+                  <a href="mailto:Infodistroy@yandex.ru" className="text-xl font-bold text-slate-900 hover:text-blue-600 transition-colors">
+                    Infodistroy@yandex.ru
                   </a>
                 </div>
               </div>
@@ -89,9 +89,12 @@ export function ContactForm() {
                   <MapPin className="w-6 h-6 text-blue-600" />
                 </div>
                 <div>
-                  <div className="text-sm text-slate-500 mb-1">Центральный офис</div>
-                  <div className="text-lg font-bold text-slate-900">
-                    г. Москва, БЦ "Индустрия", офис 404
+                  <div className="text-sm text-slate-500 mb-1">Юридический адрес и офис</div>
+                  <div className="text-base font-bold text-slate-900">
+                    117186, г. Москва, ул. Нагорная, д. 24, к. 9, пом. 1/1
+                  </div>
+                  <div className="text-xs text-slate-500 mt-1">
+                    ООО «Ди Ай Строй» • ИНН 9727043363
                   </div>
                 </div>
               </div>
@@ -106,8 +109,8 @@ export function ContactForm() {
                   <CheckCircle2 className="w-10 h-10" />
                 </div>
                 <h4 className="text-2xl font-bold text-slate-900 mb-4">Заявка успешно отправлена!</h4>
-                <p className="text-slate-600 mb-8">
-                  Наш инженерный отдел уже получил ваши данные. Мы свяжемся с вами в течение 1 рабочего дня.
+                <p className="text-slate-600 mb-8 max-w-md">
+                  Инженерный отдел ООО «Ди Ай Строй» уже получил ваше обращение. Мы проведем предварительную оценку и свяжемся с вами в течение 1 рабочего дня.
                 </p>
                 <Button 
                   onClick={() => setIsSuccess(false)}
@@ -157,8 +160,21 @@ export function ContactForm() {
               >
                 {isSubmitting ? "ОТПРАВКА..." : "РАССЧИТАТЬ СТОИМОСТЬ СМР"}
               </Button>
-              <p className="text-xs text-slate-500 text-center mt-4">
-                Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности.
+              
+              <p className="text-xs text-slate-500 text-center leading-relaxed mt-4">
+                Нажимая кнопку, вы подтверждаете свое согласие с{" "}
+                <a href="/privacy" className="text-blue-600 hover:underline">
+                  Политикой конфиденциальности
+                </a>
+                ,{" "}
+                <a href="/terms" className="text-blue-600 hover:underline">
+                  Пользовательским соглашением
+                </a>{" "}
+                и даете{" "}
+                <a href="/consent" className="text-blue-600 hover:underline">
+                  Согласие на обработку персональных данных
+                </a>{" "}
+                в соответствии с 152-ФЗ.
               </p>
             </form>
           </div>

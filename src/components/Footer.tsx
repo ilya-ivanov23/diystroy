@@ -30,11 +30,11 @@ export function Footer() {
           <div>
             <h4 className="text-slate-900 font-bold mb-6 uppercase tracking-wider text-sm">Компания</h4>
             <ul className="space-y-3 text-slate-600 text-sm">
-              <li><Link href="#about" className="hover:text-blue-600 transition-colors">О нас</Link></li>
-              <li><Link href="#portfolio" className="hover:text-blue-600 transition-colors">Проекты</Link></li>
-              <li><Link href="#about" className="hover:text-blue-600 transition-colors">Допуски и СРО</Link></li>
-              <li><Link href="#about" className="hover:text-blue-600 transition-colors">Техника</Link></li>
-              <li><Link href="#contacts" className="hover:text-blue-600 transition-colors">Контакты</Link></li>
+              <li><Link href="/#about" className="hover:text-blue-600 transition-colors">О нас</Link></li>
+              <li><Link href="/#portfolio" className="hover:text-blue-600 transition-colors">Проекты</Link></li>
+              <li><Link href="/#about" className="hover:text-blue-600 transition-colors">Допуски и СРО</Link></li>
+              <li><Link href="/#about" className="hover:text-blue-600 transition-colors">Парк техники</Link></li>
+              <li><Link href="/requisites" className="hover:text-blue-600 transition-colors font-medium text-blue-700">Реквизиты компании</Link></li>
             </ul>
           </div>
 
@@ -47,22 +47,35 @@ export function Footer() {
               </li>
               <li>
                 <div className="text-slate-500 text-xs mb-1">Электронная почта</div>
-                <a href="mailto:project@diistroy.ru" className="text-slate-900 hover:text-blue-600 transition-colors">project@diistroy.ru</a>
+                <a href="mailto:Infodistroy@yandex.ru" className="text-slate-900 font-medium hover:text-blue-600 transition-colors">Infodistroy@yandex.ru</a>
               </li>
               <li>
-                <div className="text-slate-500 text-xs mb-1">Адрес</div>
-                <div className="text-slate-900">г. Москва, БЦ "Индустрия", офис 404</div>
+                <div className="text-slate-500 text-xs mb-1">Юридический адрес</div>
+                <div className="text-slate-900 text-xs leading-relaxed">
+                  117186, г. Москва, ул. Нагорная, д. 24, к. 9, пом. 1/1
+                </div>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-slate-200 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="text-slate-500 text-xs">
-            © {new Date().getFullYear()} ООО «ДиАйСтрой». Все права защищены.
+        <div className="border-t border-slate-200 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+          <div>
+            © {new Date().getFullYear()} ООО «Ди Ай Строй» (ИНН 9727043363). Все права защищены.
           </div>
-          <div className="text-slate-500 text-xs hover:text-slate-900 transition-colors cursor-pointer">
-            Политика конфиденциальности
+          <div className="flex flex-wrap items-center gap-6">
+            <Link href="/privacy" className="hover:text-blue-600 transition-colors">
+              Политика конфиденциальности
+            </Link>
+            <Link href="/terms" className="hover:text-blue-600 transition-colors">
+              Пользовательское соглашение
+            </Link>
+            <Link href="/consent" className="hover:text-blue-600 transition-colors">
+              Согласие на обработку данных
+            </Link>
+            <Link href="/requisites" className="hover:text-blue-600 transition-colors">
+              Реквизиты
+            </Link>
           </div>
         </div>
       </div>
