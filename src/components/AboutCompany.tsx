@@ -69,9 +69,9 @@ export function AboutCompany() {
                 className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
                 style={{ backgroundImage: "url('/real_metal_frame.jpg')" }}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent" />
-              <div className="absolute bottom-4 left-4 right-4 text-white text-xs font-semibold px-3 py-2 bg-slate-900/70 backdrop-blur-sm rounded-lg border border-white/20">
-                Строительство стенового ограждения и металлокаркаса цеха
+              {/* Компактный бейдж в правом нижнем углу — не перекрывается плашкой HSE */}
+              <div className="absolute bottom-4 right-4 text-white text-xs font-semibold px-3.5 py-2 bg-slate-900/85 backdrop-blur-md rounded-xl border border-white/20 shadow-lg">
+                Монтаж металлокаркаса цеха
               </div>
             </div>
             
