@@ -25,18 +25,9 @@ export async function POST(req: Request) {
       data = await req.json();
     }
 
-    // Читаем существующие заявки для генерации последовательного человекочитаемого ID
-    const leadsFilePath = path.join(process.cwd(), "leads.json");
-    let existingLeads: any[] = [];
-    try {
-      const fileContent = await fs.readFile(leadsFilePath, "utf-8");
-      existingLeads = JSON.parse(fileContent);
-    } catch {
-      existingLeads = [];
-    }
-
-    const nextNumber = 1000 + existingLeads.length + 1;
-    const humanId = `ДИ-${nextNumber}`;
+    // Надежный генератор уникального номера заявки (например, ДИ-749281)
+    const uniqueNumber = Math.floor(100000 + Math.random() * 900000);
+    const humanId = `ДИ-${uniqueNumber}`;
     const timestamp = new Date().toLocaleString("ru-RU", { timeZone: "Europe/Moscow" });
 
     // Обработка загруженного файла
@@ -90,6 +81,14 @@ export async function POST(req: Request) {
 
     // 1. Сохраняем в локальный реестр leads.json
     try {
+      const leadsFilePath = path.join(process.cwd(), "leads.json");
+      let existingLeads: any[] = [];
+      try {
+        const fileContent = await fs.readFile(leadsFilePath, "utf-8");
+        existingLeads = JSON.parse(fileContent);
+      } catch {
+        existingLeads = [];
+      }
       existingLeads.unshift(lead);
       await fs.writeFile(leadsFilePath, JSON.stringify(existingLeads, null, 2), "utf-8");
     } catch (fsErr) {

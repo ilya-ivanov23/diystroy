@@ -53,7 +53,7 @@ export function ContactForm() {
 
       if (res.ok) {
         const result = await res.json();
-        setSubmittedId(result.leadId || "ДИ-1001");
+        setSubmittedId(result.leadId || `ДИ-${Math.floor(100000 + Math.random() * 900000)}`);
         setIsSuccess(true);
         formElement.reset();
         setSelectedFile(null);

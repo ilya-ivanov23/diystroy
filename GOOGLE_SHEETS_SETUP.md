@@ -39,6 +39,9 @@ function doPost(e) {
       }
     }
 
+    // Гарантированный уникальный номер заявки (если не передан с сайта)
+    var uniqueId = data.id || ("ДИ-" + Math.floor(100000 + Math.random() * 900000));
+
     // Запись строго по вашим 7 колонкам:
     // 1: ID
     // 2: Имя/Компания
@@ -48,7 +51,7 @@ function doPost(e) {
     // 6: File (ссылка на файл)
     // 7: Комментарий
     sheet.appendRow([
-      data.id || "",
+      uniqueId,
       data.name || "",
       data.phone || "",
       data.email || "",
