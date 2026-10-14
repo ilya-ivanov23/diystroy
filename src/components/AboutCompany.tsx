@@ -1,41 +1,92 @@
 "use client";
 
 import { useState } from "react";
-import { CheckCircle2, ShieldCheck, Truck, ZoomIn, X, Award, FileCheck2 } from "lucide-react";
+import { CheckCircle2, ShieldCheck, Truck, ZoomIn, X, Award, FileCheck2, FileDown, ExternalLink } from "lucide-react";
 
-interface Certificate {
+interface DocumentItem {
   id: string;
+  category: "sro" | "iso";
+  categoryLabel: string;
+  badgeColor: string;
   number: string;
   title: string;
-  standard: string;
+  standardOrOrg: string;
+  authority: string;
   scope: string;
+  responsibilityLevel?: string;
+  insurance?: string;
   validUntil: string;
   image: string;
+  pdfUrl?: string;
 }
 
 export function AboutCompany() {
-  const [selectedCert, setSelectedCert] = useState<Certificate | null>(null);
+  const [activeDocTab, setActiveDocTab] = useState<"all" | "sro" | "iso">("all");
+  const [selectedDoc, setSelectedDoc] = useState<DocumentItem | null>(null);
 
-  const certificates: Certificate[] = [
+  const documents: DocumentItem[] = [
+    {
+      id: "sro-nostroy-construction",
+      category: "sro",
+      categoryLabel: "Выписка СРО (Строительство)",
+      badgeColor: "bg-blue-600 text-white",
+      number: "№ СРО-9727043363-20260804-0939",
+      title: "Строительство, реконструкция и капремонт",
+      standardOrOrg: "НОСТРОЙ • Ассоциация «СИЛА»",
+      authority: "Ассоциация строительных организаций «Строительный Инженерно-Логистический Альянс» (СРО-С-282-21062017)",
+      scope: "Право осуществления строительства, реконструкции, капитального ремонта и сноса объектов капитального строительства (рег. № 2453, дата вступления: 23.08.2023).",
+      responsibilityLevel: "Первый уровень ответственности КФ ВВ (до 90 000 000 рублей по одному договору)",
+      insurance: "ПАО «САК «ЭНЕРГОГАРАНТ» (№ 251100-021-000912 на 7 500 000 руб. до 29.09.2026)",
+      validUntil: "Действует (член СРО с 23.08.2023)",
+      image: "/vypiska_sro_nostroy.png",
+      pdfUrl: "/vypiska_sro_nostroy.pdf",
+    },
+    {
+      id: "sro-nopriz-design",
+      category: "sro",
+      categoryLabel: "Выписка СРО (Проектирование)",
+      badgeColor: "bg-indigo-600 text-white",
+      number: "№ 9727043363-20260821-1820",
+      title: "Архитектурно-строительное проектирование",
+      standardOrOrg: "НОПРИЗ • Союз «ПроЭк»",
+      authority: "Саморегулируемая организация Союз проектных организаций «ПроЭк» (СРО-П-185-16052013)",
+      scope: "Право осуществлять подготовку проектной документации для объектов капитального строительства (рег. № П-185-009727043363-2325, дата вступления: 23.08.2023).",
+      responsibilityLevel: "Второй уровень ответственности КФ ВВ (до 50 000 000 рублей по одному договору)",
+      validUntil: "Действует (член СРО с 23.08.2023)",
+      image: "/vypiska_sro_nopriz.png",
+      pdfUrl: "/vypiska_sro_nopriz.pdf",
+    },
     {
       id: "iso-construction",
+      category: "iso",
+      categoryLabel: "Сертификат качества ISO",
+      badgeColor: "bg-emerald-600 text-white",
       number: "№ RPS.RU.8849.23",
-      title: "Строительство и реконструкция",
-      standard: "ГОСТ Р ИСО 9001-2015 (ISO 9001:2015)",
-      scope: "Работы по строительству, реконструкции и капитальному ремонту, оказывающие влияние на безопасность объектов капитального строительства",
-      validUntil: "23 августа 2026 г.",
+      title: "СМР и безопасность капстроительства",
+      standardOrOrg: "ГОСТ Р ИСО 9001-2015 (ISO 9001:2015)",
+      authority: "Орган по сертификации ООО «ПрофСтройСтандарт» (г. Москва)",
+      scope: "Работы по строительству, реконструкции и капитальному ремонту, оказывающие влияние на безопасность объектов капитального строительства.",
+      validUntil: "Действителен до 23 августа 2026 г.",
       image: "/certificate_iso_construction.jpg",
     },
     {
       id: "iso-design",
+      category: "iso",
+      categoryLabel: "Сертификат качества ISO",
+      badgeColor: "bg-emerald-600 text-white",
       number: "№ RPS.RU.8850.23",
-      title: "Проектная документация",
-      standard: "ГОСТ Р ИСО 9001-2015 (ISO 9001:2015)",
-      scope: "Работы по подготовке проектной документации для объектов капитального строительства",
-      validUntil: "23 августа 2026 г.",
+      title: "Подготовка проектной документации",
+      standardOrOrg: "ГОСТ Р ИСО 9001-2015 (ISO 9001:2015)",
+      authority: "Орган по сертификации ООО «ПрофСтройСтандарт» (г. Москва)",
+      scope: "Работы по подготовке проектной документации для объектов капитального строительства.",
+      validUntil: "Действителен до 23 августа 2026 г.",
       image: "/certificate_iso_design.jpg",
     },
   ];
+
+  const filteredDocs = activeDocTab === "all" 
+    ? documents 
+    : documents.filter((doc) => doc.category === activeDocTab);
 
   return (
     <section id="about" className="py-24 bg-slate-50 border-y border-slate-200">
@@ -96,7 +147,7 @@ export function AboutCompany() {
           </div>
         </div>
 
-        {/* Блоки: Техника и Сертификация */}
+        {/* Блоки: Техника и Сертификация / СРО */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Спецтехника */}
           <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
@@ -135,42 +186,78 @@ export function AboutCompany() {
             </div>
           </div>
 
-          {/* Реальные сертификаты ISO */}
+          {/* Разрешительная документация: СРО и ISO */}
           <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
             <div>
               <div className="flex items-center gap-3 mb-4">
                 <Award className="w-8 h-8 text-blue-600" />
-                <h4 className="font-bold text-slate-900 text-2xl">Сертификация и лицензии</h4>
+                <h4 className="font-bold text-slate-900 text-2xl">Допуски СРО и лицензии</h4>
               </div>
-              <p className="text-slate-600 mb-6">
-                ООО «Ди Ай Строй» прошло добровольную сертификацию систем менеджмента качества в соответствии с ГОСТ Р ИСО 9001-2015 на строительство и проектирование.
+              <p className="text-slate-600 mb-5 text-sm leading-relaxed">
+                ООО «Ди Ай Строй» является действующим членом СРО в строительстве (НОСТРОЙ, компенсационный фонд до 90 млн ₽) и проектировании (НОПРИЗ), а также имеет сертификаты менеджмента качества ISO 9001:2015.
               </p>
+
+              {/* Табы категорий документов */}
+              <div className="flex gap-2 mb-4">
+                {[
+                  { id: "all", label: "Все (4)" },
+                  { id: "sro", label: "Выписки СРО (2)" },
+                  { id: "iso", label: "Сертификаты ISO (2)" },
+                ].map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveDocTab(tab.id as "all" | "sro" | "iso")}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                      activeDocTab === tab.id
+                        ? "bg-blue-600 text-white shadow-sm"
+                        : "bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200"
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
             </div>
 
-            {/* Сетка двух реальных сертификатов */}
-            <div className="grid grid-cols-2 gap-4 mb-4">
-              {certificates.map((cert) => (
+            {/* Сетка документов */}
+            <div className="grid grid-cols-2 gap-3 mb-4">
+              {filteredDocs.map((doc) => (
                 <div 
-                  key={cert.id}
-                  onClick={() => setSelectedCert(cert)}
-                  className="group rounded-xl border border-slate-200 bg-slate-50 p-3 hover:border-blue-400 hover:shadow-lg transition-all cursor-pointer flex flex-col"
+                  key={doc.id}
+                  onClick={() => setSelectedDoc(doc)}
+                  className="group rounded-xl border border-slate-200 bg-slate-50 p-2.5 hover:border-blue-400 hover:shadow-lg transition-all cursor-pointer flex flex-col justify-between"
                 >
-                  <div className="aspect-[3/4] rounded-lg overflow-hidden relative mb-3 bg-white border border-slate-200 shadow-sm">
+                  <div className="aspect-[3/4] rounded-lg overflow-hidden relative mb-2 bg-white border border-slate-200 shadow-sm">
                     <div 
                       className="absolute inset-0 bg-contain bg-no-repeat bg-center transition-transform duration-500 group-hover:scale-105"
-                      style={{ backgroundImage: `url(${cert.image})` }}
+                      style={{ backgroundImage: `url(${doc.image})` }}
                     />
                     <div className="absolute inset-0 bg-blue-900/0 group-hover:bg-blue-900/10 transition-colors" />
+                    
+                    {/* Метка на фото */}
+                    <div className="absolute top-2 left-2">
+                      <span className={`px-2 py-0.5 rounded text-[10px] font-bold shadow-sm ${doc.badgeColor}`}>
+                        {doc.category === "sro" ? "СРО" : "ISO 9001"}
+                      </span>
+                    </div>
+
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                       <span className="px-3 py-1.5 rounded-full bg-slate-900/80 backdrop-blur-sm text-white text-xs font-bold flex items-center gap-1.5 shadow-md">
-                        <ZoomIn className="w-3.5 h-3.5" /> Увеличить
+                        <ZoomIn className="w-3.5 h-3.5" /> Открыть
                       </span>
                     </div>
                   </div>
+
                   <div className="text-center">
-                    <span className="text-[11px] font-bold text-blue-600 block leading-tight">{cert.standard}</span>
-                    <span className="text-xs font-bold text-slate-800 block mt-1 line-clamp-1">{cert.title}</span>
-                    <span className="text-[10px] text-slate-500 block mt-0.5">{cert.number}</span>
+                    <span className="text-[11px] font-bold text-blue-600 block leading-tight truncate">
+                      {doc.standardOrOrg}
+                    </span>
+                    <span className="text-xs font-bold text-slate-800 block mt-0.5 line-clamp-1">
+                      {doc.title}
+                    </span>
+                    <span className="text-[10px] text-slate-500 block mt-0.5 truncate font-mono">
+                      {doc.number}
+                    </span>
                   </div>
                 </div>
               ))}
@@ -179,7 +266,7 @@ export function AboutCompany() {
             <div className="bg-blue-50 border border-blue-100 rounded-xl p-3 text-xs text-blue-900 flex items-start gap-2.5">
               <FileCheck2 className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
               <span>
-                Официальные бланки с регистрационными номерами «РосПромСертификация». Нажмите на любой сертификат для просмотра в полном разрешении.
+                Официальные выписки из единых реестров НОСТРОЙ и НОПРИЗ с квалифицированной электронной подписью. Нажмите на документ для подробного просмотра или скачивания PDF.
               </span>
             </div>
           </div>
@@ -187,11 +274,11 @@ export function AboutCompany() {
 
       </div>
 
-      {/* Модальное окно просмотра сертификата */}
-      {selectedCert && (
+      {/* Модальное окно просмотра документов */}
+      {selectedDoc && (
         <div 
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-in fade-in duration-200"
-          onClick={() => setSelectedCert(null)}
+          onClick={() => setSelectedDoc(null)}
         >
           <div 
             className="bg-white rounded-3xl max-w-3xl w-full max-h-[92vh] overflow-hidden shadow-2xl border border-slate-200 relative flex flex-col md:flex-row"
@@ -199,34 +286,34 @@ export function AboutCompany() {
           >
             {/* Кнопка закрытия */}
             <button 
-              onClick={() => setSelectedCert(null)}
-              className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-slate-900/70 hover:bg-slate-900 text-white flex items-center justify-center transition-colors shadow-lg"
+              onClick={() => setSelectedDoc(null)}
+              className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-slate-900/70 hover:bg-slate-900 text-white flex items-center justify-center transition-colors shadow-lg cursor-pointer"
             >
               <X className="w-6 h-6" />
             </button>
 
-            {/* Крупный скан */}
-            <div className="md:w-3/5 bg-slate-100 flex items-center justify-center p-4 min-h-[420px] md:min-h-[560px]">
+            {/* Крупный скан документа */}
+            <div className="md:w-3/5 bg-slate-100 flex items-center justify-center p-4 min-h-[360px] md:min-h-[560px]">
               <img 
-                src={selectedCert.image} 
-                alt={selectedCert.title} 
+                src={selectedDoc.image} 
+                alt={selectedDoc.title} 
                 className="max-h-[82vh] w-auto object-contain rounded-lg shadow-md border border-slate-200"
               />
             </div>
 
-            {/* Описание сертификата */}
+            {/* Описание документа и юридические реквизиты */}
             <div className="md:w-2/5 p-6 flex flex-col justify-between bg-white overflow-y-auto">
               <div>
-                <span className="inline-block px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700 mb-3 border border-blue-200">
-                  {selectedCert.standard}
+                <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold mb-3 ${selectedDoc.badgeColor}`}>
+                  {selectedDoc.categoryLabel}
                 </span>
 
                 <h3 className="text-xl font-extrabold text-slate-900 mb-2 leading-tight">
-                  {selectedCert.title}
+                  {selectedDoc.title}
                 </h3>
 
                 <p className="text-xs font-bold text-slate-500 mb-4">
-                  Рег. номер: <span className="text-slate-800">{selectedCert.number}</span>
+                  Номер документа: <span className="text-slate-800 font-mono">{selectedDoc.number}</span>
                 </p>
 
                 <div className="space-y-3 border-t border-slate-100 pt-4 mb-4 text-xs">
@@ -236,30 +323,56 @@ export function AboutCompany() {
                   </div>
 
                   <div>
-                    <span className="block text-slate-400 font-bold uppercase text-[10px]">Орган по сертификации</span>
-                    <span className="font-medium text-slate-700">ООО «ПрофСтройСтандарт» (г. Москва)</span>
+                    <span className="block text-slate-400 font-bold uppercase text-[10px]">Кем выдан / СРО</span>
+                    <span className="font-medium text-slate-700 leading-snug">{selectedDoc.authority}</span>
                   </div>
+
+                  {selectedDoc.responsibilityLevel && (
+                    <div className="p-2.5 rounded-lg bg-blue-50 border border-blue-100">
+                      <span className="block text-blue-800 font-bold uppercase text-[10px] mb-0.5">Уровень ответственности</span>
+                      <span className="font-semibold text-blue-900">{selectedDoc.responsibilityLevel}</span>
+                    </div>
+                  )}
+
+                  {selectedDoc.insurance && (
+                    <div className="p-2.5 rounded-lg bg-emerald-50 border border-emerald-100">
+                      <span className="block text-emerald-800 font-bold uppercase text-[10px] mb-0.5">Страхование ГО</span>
+                      <span className="font-medium text-emerald-950">{selectedDoc.insurance}</span>
+                    </div>
+                  )}
 
                   <div>
                     <span className="block text-slate-400 font-bold uppercase text-[10px]">Область действия</span>
-                    <p className="font-medium text-slate-700 leading-relaxed mt-0.5">{selectedCert.scope}</p>
+                    <p className="font-medium text-slate-700 leading-relaxed mt-0.5">{selectedDoc.scope}</p>
                   </div>
 
                   <div>
-                    <span className="block text-slate-400 font-bold uppercase text-[10px]">Срок действия</span>
-                    <span className="font-bold text-green-700">{selectedCert.validUntil}</span>
+                    <span className="block text-slate-400 font-bold uppercase text-[10px]">Статус</span>
+                    <span className="font-bold text-emerald-700">{selectedDoc.validUntil}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-slate-100">
+              {/* Кнопки действий */}
+              <div className="pt-4 border-t border-slate-100 flex flex-col gap-2">
+                {selectedDoc.pdfUrl ? (
+                  <a
+                    href={selectedDoc.pdfUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md transition-colors"
+                  >
+                    <FileDown className="w-4 h-4" /> Скачать официальную выписку (PDF)
+                  </a>
+                ) : null}
+
                 <a
-                  href={selectedCert.image}
+                  href={selectedDoc.image}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md transition-colors"
+                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-xs transition-colors"
                 >
-                  Открыть оригинал в новой вкладке
+                  <ExternalLink className="w-3.5 h-3.5" /> Открыть скан в новой вкладке
                 </a>
               </div>
             </div>
